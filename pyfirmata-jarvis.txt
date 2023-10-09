@@ -1,0 +1,108 @@
+import pyfirmata
+
+# Initialize the Arduino connection
+def initialize_arduino():
+    try:
+        board = pyfirmata.Arduino('COM3')  # Replace 'COM3' with your Arduino's port
+        return board
+    except Exception as e:
+        print(f"Failed to initialize Arduino: {e}")
+        return None
+
+# Turn on the light on the Arduino
+def turn_on_light(board):
+    try:
+        board.digital[13].write(1)  # Assuming the LED is connected to digital pin 13
+        print("Light turned on")
+    except Exception as e:
+        print(f"Failed to turn on the light: {e}")
+
+# Turn off the light on the Arduino
+def turn_off_light(board):
+    try:
+        board.digital[13].write(0)
+        print("Light turned off")
+    except Exception as e:
+        print(f"Failed to turn off the light: {e}")
+
+# Modify your chat function to control the light
+def chat(query, arduino_board):
+    global chatStr
+    print(chatStr)
+    openai.api_key = apikey
+    chatStr += f"Lakshit: {query}\n Jarvis: "
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt= chatStr,
+        temperature=0.7,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+    )
+
+    speak(response["choices"][0]["text"])
+    chatStr += f"{response['choices'][0]['text']}\n"
+    
+    # Check if the user wants to turn on the light
+    if "turn on the light" in query:
+        turn_on_light(arduino_board)
+    # Check if the user wants to turn off the light
+    elif "turn off the light" in query:
+        turn_off_light(arduino_board)
+    
+    return response["choices"][0]["text"]
+
+if __name__ == "__main__":
+    arduino_board = initialize_arduino()  # Initialize Arduino connection
+
+    if arduino_board:
+        # Rest of your code here...
+        wish()
+
+        while True:
+            query = Takecommand().lower()
+
+            # LOGIC BUILDING STARTS NOW
+
+            if "open notepad" in query:
+                # ... (Your existing code)
+
+            elif "play music" in query:
+                # ... (Your existing code)
+
+            elif "shutdown" in query:
+                # ... (Your existing code)
+
+            elif "ip address" in query:
+                # ... (Your existing code)
+
+            elif "wikipedia" in query:
+                # ... (Your existing code)
+
+            elif "open youtube" in query:
+                # ... (Your existing code)
+
+            elif "open instagram" in query:
+                # ... (Your existing code)
+
+            elif "open codechef" in query:
+                # ... (Your existing code)
+
+            elif "open google" in query:
+                # ... (Your existing code)
+
+            elif "send message" in query:
+                # ... (Your existing code)
+
+            elif "play song on youtube" in query:
+                # ... (Your existing code)
+
+            elif "email to ravi" in query:
+                # ... (Your existing code)
+
+            else:
+                print("Chatting...")
+                chat(query, arduino_board)  # Pass the Arduino board to the chat function
+
+        arduino_board.exit()  # Close Arduino connection when done
